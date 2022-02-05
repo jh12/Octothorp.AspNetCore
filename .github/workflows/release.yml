@@ -20,9 +20,17 @@ jobs:
     - name: Determine Version
       id: gitversion
       uses: gittools/actions/gitversion/execute@v0.9.7
+    - name: Setup .NET Core SDK 6.0.x
+      uses: actions/setup-dotnet@v1.7.2
+      with:
+        dotnet-version: 6.0.x
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore /p:Version=${{ steps.gitversion.outputs.NuGetVersionV2 }}
+    - name: Test
+      run: dotnet test --no-build
     - name: Pack nuget
-      run: dotnet pack --configuration Release /p:Version=${{ steps.gitversion.outputs.NuGetVersionV2 }}
-    - name: print directory after
-      run: ls src
+      run: dotnet pack --no-build
     - name: Push nuget
       run: dotnet nuget push "src/Octothorp.AspNetCore/bin/Release/*.nupkg" --api-key ${{ secrets.NUGETKEY }} --source "https://api.nuget.org/v3/index.json"
