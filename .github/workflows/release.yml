@@ -1,0 +1,26 @@
+name: release
+on:
+  push:
+    branches:
+      - main
+      - development
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.7
+      with:
+        versionSpec: '5.x'
+    - name: Determine Version
+      id: gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.7
+    - name: Pack nuget
+      run: dotnet pack --configuration Release /p:Version=${{ steps.gitversion.outputs.NuGetVersionV2 }}
+    - name: Push nuget
+      run: dotnet nuget push "Octothorp.AspNetCore/bin/Release/*.nupkg" --api-key ${{ secrets.NUGETKEY }} --source "https://api.nuget.org/v3/index.json"
