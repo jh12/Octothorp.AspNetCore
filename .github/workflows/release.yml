@@ -22,5 +22,7 @@ jobs:
       uses: gittools/actions/gitversion/execute@v0.9.7
     - name: Pack nuget
       run: dotnet pack --configuration Release /p:Version=${{ steps.gitversion.outputs.NuGetVersionV2 }}
+    - name: print directory after
+      run: ls
     - name: Push nuget
       run: dotnet nuget push "Octothorp.AspNetCore/bin/Release/*.nupkg" --api-key ${{ secrets.NUGETKEY }} --source "https://api.nuget.org/v3/index.json"
