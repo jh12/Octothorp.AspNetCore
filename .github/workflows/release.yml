@@ -6,7 +6,7 @@ on:
       - development
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -29,8 +29,8 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore /p:Version=${{ steps.gitversion.outputs.NuGetVersionV2 }}
     - name: Test
-      run: dotnet test --no-build
+      run: dotnet test --no-build --configuration Release
     - name: Pack nuget
-      run: dotnet pack --no-build
+      run: dotnet pack --no-build --configuration Release
     - name: Push nuget
       run: dotnet nuget push "src/Octothorp.AspNetCore/bin/Release/*.nupkg" --api-key ${{ secrets.NUGETKEY }} --source "https://api.nuget.org/v3/index.json"
