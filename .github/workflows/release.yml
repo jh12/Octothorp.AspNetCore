@@ -23,6 +23,6 @@ jobs:
     - name: Pack nuget
       run: dotnet pack --configuration Release /p:Version=${{ steps.gitversion.outputs.NuGetVersionV2 }}
     - name: print directory after
-      run: ls
+      run: ls src
     - name: Push nuget
-      run: dotnet nuget push "Octothorp.AspNetCore/bin/Release/*.nupkg" --api-key ${{ secrets.NUGETKEY }} --source "https://api.nuget.org/v3/index.json"
+      run: dotnet nuget push "src/Octothorp.AspNetCore/bin/Release/*.nupkg" --api-key ${{ secrets.NUGETKEY }} --source "https://api.nuget.org/v3/index.json"
