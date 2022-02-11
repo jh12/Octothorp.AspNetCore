@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 
-namespace Octothorp.AspNetCore.Health;
+namespace Octothorp.AspNetCore.Status;
 
-public class HealthUtil
+public class StatusUtil
 {
     public static string GetVersion()
     {

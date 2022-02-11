@@ -1,22 +1,22 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Octothorp.AspNetCore.Health;
-using Octothorp.AspNetCore.Tests.Helpers;
+using Octothorp.AspNetCore.Helpers;
 
 namespace Octothorp.AspNetCore.Tests;
 
-class HealthApiApplication : WebApplicationFactory<Program>
+class StatusApiApplication : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.Configure(app =>
         {
-            app
-               .MapGet("/health", () => "Alive")
-               .MapGet("/health/version", HealthUtil.GetVersion);
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapStatus();
+            });
         });
         base.ConfigureWebHost(builder);
     }
